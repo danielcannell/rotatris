@@ -35,7 +35,8 @@ func _process(delta):
 
     if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
         self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
-        update_block_positions()
+        var grid = update_block_positions()
+        clear_full_lines(grid)
         self.gravity_counter += 1
 
     update_camera(delta)
@@ -84,7 +85,7 @@ func process_inputs():
 
 
 # Update the grid coordinates of all blocks
-func update_block_positions():
+func update_block_positions() -> Dictionary:
     var grid := {}
     var done := false
 
@@ -106,6 +107,61 @@ func update_block_positions():
         # When the controlled block lands it becomes uncontrolled
         if self.controlled_block != null and not self.controlled_block.moved:
             self.controlled_block = null
+
+    return grid
+
+
+func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
+    for id in to_split:
+        var block = self.blocks[id]
+        block.erase_grid(grid)
+        var new_blocks := split_block(block, line)
+        self.blocks.erase(id)
+        self.remove_child(block)
+        for x in new_blocks:
+            x.fill_grid(grid)
+            self.blocks[x.id] = x
+            self.add_child(x)
+
+
+func clear_full_lines(grid: Dictionary):
+    if self.gravity[0] != 0:
+        # for each column
+        for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+            var full := true
+            var blocks_in_row := []
+            var line := []
+            for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+                line.append([col, row])
+                var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
+                if id == Globals.INVALID_BLOCK_ID or blocks[id].moved:
+                    full = false
+                    break
+                if not blocks_in_row.has(id):
+                    blocks_in_row.append(id)
+
+            # if column is full
+            if full:
+                _split_blocks(grid, blocks_in_row, line)
+
+    else:
+        # for each row
+        for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+            var full := true
+            var blocks_in_row := []
+            var line := []
+            for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+                line.append([col, row])
+                var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
+                if id == Globals.INVALID_BLOCK_ID or blocks[id].moved:
+                    full = false
+                    break
+                if not blocks_in_row.has(id):
+                    blocks_in_row.append(id)
+
+            # if row is full
+            if full:
+                _split_blocks(grid, blocks_in_row, line)
 
 
 func rotate_gravity():
@@ -162,6 +218,7 @@ func split_block(block: Block, line: Array) -> Array:
         new_block.color = block.color
         new_block.id = Globals.allocate_block_id()
         new_block.moved = block.moved
+        new_block.update_position()
         res.append(new_block)
 
     return res
