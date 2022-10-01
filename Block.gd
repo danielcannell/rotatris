@@ -124,7 +124,7 @@ func update_shape():
         var y: int = pos[1]
 
         var child := Sprite.new()
-        child.position = Vector2(x - 0.5, y - 0.5) * BLOCK_SIZE
+        child.position = Vector2(x + 0.5, y - 0.5) * BLOCK_SIZE
         child.texture = load("res://Art/box.png")
         child.modulate = Globals.ColorLookup[color]
         add_child(child)
@@ -170,13 +170,13 @@ func can_move(grid: Dictionary, step: Array):
             return false
 
         # Check if this square is leaving the grid bounds
-        if step[0] > 0 and c[0] > Globals.GRID_HALF_WIDTH:
+        if step[0] > 0 and c[0] >= Globals.GRID_HALF_WIDTH:
             return false
-        if step[0] < 0 and c[0] <= -Globals.GRID_HALF_WIDTH:
+        if step[0] < 0 and c[0] < -Globals.GRID_HALF_WIDTH:
             return false
-        if step[1] > 0 and c[1] > Globals.GRID_HALF_WIDTH:
+        if step[1] > 0 and c[1] >= Globals.GRID_HALF_WIDTH:
             return false
-        if step[1] < 0 and c[1] <= -Globals.GRID_HALF_WIDTH:
+        if step[1] < 0 and c[1] < -Globals.GRID_HALF_WIDTH:
             return false
 
     return true
@@ -210,13 +210,13 @@ func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
             return false
 
         # Check if this square is leaving the grid bounds
-        if gravity[0] >= 0 and c[0] > Globals.GRID_HALF_WIDTH:
+        if gravity[0] >= 0 and c[0] >= Globals.GRID_HALF_WIDTH:
             return false
-        if gravity[0] <= 0 and c[0] <= -Globals.GRID_HALF_WIDTH:
+        if gravity[0] <= 0 and c[0] < -Globals.GRID_HALF_WIDTH:
             return false
-        if gravity[1] >= 0 and c[1] > Globals.GRID_HALF_WIDTH:
+        if gravity[1] >= 0 and c[1] >= Globals.GRID_HALF_WIDTH:
             return false
-        if gravity[1] <= 0 and c[1] <= -Globals.GRID_HALF_WIDTH:
+        if gravity[1] <= 0 and c[1] < -Globals.GRID_HALF_WIDTH:
             return false
 
     self.erase_grid(grid)
