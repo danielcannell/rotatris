@@ -199,7 +199,7 @@ func move(grid: Dictionary, step: Array, smooth := true):
 
 
 func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
-    var new_rot = (self.rot + 1) % 4
+    var new_rot = (self.rot + rotate + 4) % 4
     var new_squares = [] + SHAPE_ROT_LOOKUP[self.shape][new_rot]
 
     for square in new_squares:
