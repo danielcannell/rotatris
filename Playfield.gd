@@ -23,6 +23,8 @@ var time_until_spawn := 0.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
     self.blocks = []
+    var boundary = Boundary.new()
+    add_child(boundary)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

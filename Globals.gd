@@ -27,8 +27,10 @@ var ColorLookup = {
     Colors.RED: Color(1, 0, 0),
     Colors.YELLOW: Color(1, 1, 0),
     Colors.ORANGE: Color(1, 0.5, 0),
-    Colors.PURPLE: Color(0.5, 0, 0.5)
+    Colors.PURPLE: Color(0.5, 0, 0.5),
 }
+
+const BACKGROUND_GREY := Color(0.2, 0.2, 0.2)
 
 
 const TIME_TO_MOVE_1_SQUARE := 0.25
@@ -36,7 +38,7 @@ const MOVES_PER_GRAVITY_CHANGE := int(3 / TIME_TO_MOVE_1_SQUARE)
 const GRID_HALF_WIDTH := 5
 const GRID_WIDTH := GRID_HALF_WIDTH * 2
 
-
+const BLOCK_SIZE: int = 32
 const INVALID_BLOCK_ID = 0
 var block_id = 0
 

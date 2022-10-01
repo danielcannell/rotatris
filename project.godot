@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Block",
 "language": "GDScript",
 "path": "res://Block.gd"
+}, {
+"base": "Node2D",
+"class": "Boundary",
+"language": "GDScript",
+"path": "res://Boundary.gd"
 } ]
 _global_script_class_icons={
-"Block": ""
+"Block": "",
+"Boundary": ""
 }
 
 [application]
