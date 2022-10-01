@@ -197,7 +197,7 @@ func move(grid: Dictionary, step: Array, smooth := true):
             self._old_coord[1] = self.coord[1]
 
 
-func try_rotate(grid: Dictionary, rotate: int):
+func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
     var new_rot = (self.rot + 1) % 4
     var new_squares = SHAPE_ROT_LOOKUP[self.shape][new_rot]
 
@@ -209,13 +209,13 @@ func try_rotate(grid: Dictionary, rotate: int):
             return false
 
         # Check if this square is leaving the grid bounds
-        if c[0] > Globals.GRID_HALF_WIDTH:
+        if gravity[0] >= 0 and c[0] > Globals.GRID_HALF_WIDTH:
             return false
-        if c[0] <= -Globals.GRID_HALF_WIDTH:
+        if gravity[0] <= 0 and c[0] <= -Globals.GRID_HALF_WIDTH:
             return false
-        if c[1] > Globals.GRID_HALF_WIDTH:
+        if gravity[1] >= 0 and c[1] > Globals.GRID_HALF_WIDTH:
             return false
-        if c[1] <= -Globals.GRID_HALF_WIDTH:
+        if gravity[1] <= 0 and c[1] <= -Globals.GRID_HALF_WIDTH:
             return false
 
     self.erase_grid(grid)

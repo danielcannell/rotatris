@@ -81,7 +81,7 @@ func process_inputs():
                 self.controlled_block.move(grid, step, false)
 
         if rotate:
-            self.controlled_block.try_rotate(grid, rotate)
+            self.controlled_block.try_rotate(grid, rotate, gravity)
 
 
 # Update the grid coordinates of all blocks
