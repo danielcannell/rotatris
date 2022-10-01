@@ -19,6 +19,9 @@ var gravity: Array = [0, 1]
 # TODO: Should spawn when falling tetronimo lands
 var time_until_spawn := 0.0
 
+# The block current controlled by user input
+var controlled_block : Block = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -58,10 +61,22 @@ func update_block_positions():
         done = true
 
         for block in self.blocks:
-            if not block.moved and block.can_move(grid, self.gravity):
-                block.move(grid, self.gravity)
+            var step := self.gravity
+
+            if block == self.controlled_block:
+                if Input.is_action_pressed("move_left"):
+                    step = [step[0] - self.gravity[1], step[1] + self.gravity[0]]
+                if Input.is_action_pressed("move_right"):
+                    step = [step[0] + self.gravity[1], step[1] - self.gravity[0]]
+
+            if not block.moved and block.can_move(grid, step):
+                block.move(grid, step)
                 block.moved = true
                 done = false
+
+        # When the controlled block lands it becomes uncontrolled
+        if self.controlled_block != null and not self.controlled_block.moved:
+            self.controlled_block = null
 
 
 func rotate_gravity():
@@ -74,4 +89,5 @@ func spawn_random_block():
     block.coord = [-(Globals.GRID_HALF_WIDTH + 2) * gravity[0], -(Globals.GRID_HALF_WIDTH + 2) * gravity[1]]
     add_child(block)
     self.blocks.append(block)
+    self.controlled_block = block
     self.emit_signal("score_changed", self.blocks.size())
