@@ -15,6 +15,11 @@ var id := Globals.INVALID_BLOCK_ID
 # Has this block been moved this turn?
 var moved := false
 
+# Last grid pos before a move
+var _old_coord := [0, 0]
+var _slide_t := 1.0
+var _slide_time := 1.0
+
 
 # shape is Globals.DefaultShapes
 func from_shape(shape: int):
@@ -69,7 +74,15 @@ func update_shape():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    self.position = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])
+    if self._slide_t < 1.0:
+        self._slide_t += delta / self._slide_time
+    else:
+        self._slide_t = 1.0
+
+    # smoothly move the block to its target position
+    var old_pos = BLOCK_SIZE * Vector2(self._old_coord[0], self._old_coord[1])
+    var target_pos = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])
+    self.position = lerp(old_pos, target_pos, self._slide_t)
 
 
 func fill_grid(grid: Dictionary):
@@ -109,5 +122,9 @@ func can_move(grid: Dictionary, step: Array):
 
 func move(grid: Dictionary, step: Array):
     self.erase_grid(grid)
-    self.coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
+    var new_coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
+    self._old_coord = self.coord
+    self.coord = new_coord
+    self._slide_t = 0.0
+    self._slide_time = Globals.TIME_TO_MOVE_1_SQUARE
     self.fill_grid(grid)
