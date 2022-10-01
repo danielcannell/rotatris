@@ -124,7 +124,7 @@ func can_move(grid: Dictionary, step: Array):
     return true
 
 
-func move(grid: Dictionary, step: Array):
+func move(grid: Dictionary, step: Array, smooth := true):
     self.erase_grid(grid)
     var new_coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
     self._old_coord = self.coord
@@ -132,3 +132,9 @@ func move(grid: Dictionary, step: Array):
     self._slide_t = 0.0
     self._slide_time = Globals.TIME_TO_MOVE_1_SQUARE
     self.fill_grid(grid)
+
+    if not smooth:
+        if step[0]:
+            self._old_coord[0] = self.coord[0]
+        if step[1]:
+            self._old_coord[1] = self.coord[1]

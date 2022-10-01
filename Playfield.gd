@@ -47,6 +47,29 @@ func _process(delta):
             self.gravity_counter = 0
             self.rotate_gravity()
 
+    process_inputs()
+
+
+func process_inputs():
+    if self.controlled_block == null:
+        return
+
+    var move := 0
+    if Input.is_action_just_pressed("move_left"):
+        move -= 1
+    if Input.is_action_just_pressed("move_right"):
+        move += 1
+
+    if move:
+        var step := [move * +self.gravity[1], move * -self.gravity[0]]
+
+        var grid := {}
+        for block in self.blocks:
+            block.fill_grid(grid)
+
+        if self.controlled_block.can_move(grid, step):
+            self.controlled_block.move(grid, step, false)
+
 
 # Update the grid coordinates of all blocks
 func update_block_positions():
@@ -62,12 +85,6 @@ func update_block_positions():
 
         for block in self.blocks:
             var step := self.gravity
-
-            if block == self.controlled_block:
-                if Input.is_action_pressed("move_left"):
-                    step = [step[0] - self.gravity[1], step[1] + self.gravity[0]]
-                if Input.is_action_pressed("move_right"):
-                    step = [step[0] + self.gravity[1], step[1] - self.gravity[0]]
 
             if not block.moved and block.can_move(grid, step):
                 block.move(grid, step)
