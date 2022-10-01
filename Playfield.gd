@@ -41,6 +41,8 @@ func _process(delta):
             self.gravity_counter = 0
             self.rotate_gravity()
 
+    update_camera(delta)
+
     self.time_until_spawn -= delta
     if self.time_until_spawn < 0.0:
         spawn_random_block()
@@ -86,7 +88,8 @@ func rotate_gravity():
 func spawn_random_block():
     var block: Node2D = Block.new()
     block.random()
-    block.coord = [-(Globals.GRID_HALF_WIDTH + 2) * gravity[0], -(Globals.GRID_HALF_WIDTH + 2) * gravity[1]]
+    block.coord = [-(Globals.GRID_HALF_WIDTH + 2) * gravity[0], -(Globals.GRID_HALF_WIDTH + 2) * gravity[1]] # TODO: This should be in the block class
+    block.update_position()
     add_child(block)
     self.blocks.append(block)
     self.controlled_block = block
@@ -135,3 +138,24 @@ func split_block(block: Block, line: Array) -> Array:
         res.append(new_block)
 
     return res
+
+
+func update_camera(delta: float):
+    # Work out how much more we want to rotate the camera
+    var target_angle := atan2(self.gravity[0], self.gravity[1])
+    var current_angle := self.rotation
+    var rot := target_angle - current_angle
+
+    # Reduce to the minimum rotation
+    while rot > PI:
+        rot -= 2 * PI
+    while rot <  -PI:
+        rot += 2 * PI
+
+    if abs(rot) < 1e-2:
+        # Snap to the correct rotation
+        self.rotation = target_angle
+    else:
+        # Rate limit and rotate
+        rot = clamp(rot, -Globals.CAMERA_ROTATION_RATE * delta, Globals.CAMERA_ROTATION_RATE * delta)
+        self.rotation = current_angle + rot

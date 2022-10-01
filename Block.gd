@@ -79,6 +79,10 @@ func _process(delta):
     else:
         self._slide_t = 1.0
 
+    self.update_position()
+
+
+func update_position():
     # smoothly move the block to its target position
     var old_pos = BLOCK_SIZE * Vector2(self._old_coord[0], self._old_coord[1])
     var target_pos = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])
