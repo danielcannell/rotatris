@@ -1,0 +1,13 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[ext_resource path="res://Art/RedSquare.png" type="Texture" id=1]
+[ext_resource path="res://Art/BlueSquare.png" type="Texture" id=2]
+[ext_resource path="res://Art/GreenSquare.png" type="Texture" id=3]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 1 ) ],
+"loop": false,
+"name": "default",
+"speed": 0.0
+} ]
