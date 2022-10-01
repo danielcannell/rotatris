@@ -133,7 +133,7 @@ func split_block(block: Block, line: Array) -> Array:
         var remove := -1
         for i in range(block.squares.size()):
             var square = block.squares[i]
-            var adj = [square[0] + cell[0], square[1] + cell[1]]
+            var adj = [square[0] + block.coord[0], square[1] + block.coord[1]]
             if adj[0] == cell[0] and adj[1] == cell[1]:
                 remove = i
                 break
