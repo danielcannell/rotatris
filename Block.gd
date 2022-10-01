@@ -21,6 +21,74 @@ var _slide_t := 1.0
 var _slide_time := 1.0
 
 
+const SHAPES_ROTATIONS = {
+	"line_h": [[0,0], [1,0], [2,0], [3,0]],
+	"line_v": [[0,0], [0,1], [0,2], [0,3]],
+	"box": [[0,0], [0,1], [1,1], [1,0]],
+	"j_h_down": [[-1, 0], [0, 0], [1, 0], [1, 1]],
+	"j_v_left": [[0, -1], [0, 0], [0, 1], [-1, 1]],
+	"j_h_up": [[-1, 0], [0, 0], [1, 0], [-1, -1]],
+	"j_v_right": [[0, -1], [0, 0], [0, 1], [1, -1]],
+	"l_h_down": [[-1, 0], [0, 0], [1, 0], [-1, 1]],
+	"l_v_left": [[0, -1], [0, 0], [0, 1], [-1, -1]],
+	"l_h_up": [[-1, 0], [0, 0], [1, 0], [1, -1]],
+	"l_v_right": [[0, -1], [0, 0], [0, 1], [1, 1]],
+	"s_h":  [[-1, 1], [0, 1], [0, 0], [1, 0]],
+	"s_v":  [[0, 0], [0, -1], [1, 0], [1, 1]],
+	"t_down": [[-1, 0], [0, 0], [1, 0], [0, -1]],
+	"t_left": [[0, -1], [0, 0], [0, 1], [-1, 0]],
+	"t_up": [[-1, 0], [0, 0], [1, 0], [0, 1]],
+	"t_right": [[0, -1], [0, 0], [0, 1], [1, 0]],
+	"z_h":  [[-1, 0], [0, 0], [0, 1], [1, 1]],
+	"z_v":  [[0, -1], [0, 0], [1, 0], [1, 1]],
+}
+
+const SHAPE_ROT_LOOKUP = {
+	Globals.DefaultShapes.I: {
+		0: SHAPES_ROTATIONS["line_v"],
+		1: SHAPES_ROTATIONS["line_h"],
+		2: SHAPES_ROTATIONS["line_v"],
+		3: SHAPES_ROTATIONS["line_h"],
+	},
+	Globals.DefaultShapes.O: {
+		0: SHAPES_ROTATIONS["box"],
+		1: SHAPES_ROTATIONS["box"],
+		2: SHAPES_ROTATIONS["box"],
+		3: SHAPES_ROTATIONS["box"],
+	},
+	Globals.DefaultShapes.J: {
+		0: SHAPES_ROTATIONS["j_h_down"],
+		1: SHAPES_ROTATIONS["j_v_left"],
+		2: SHAPES_ROTATIONS["j_h_up"],
+		3: SHAPES_ROTATIONS["j_v_right"],
+	},
+	Globals.DefaultShapes.L: {
+		0: SHAPES_ROTATIONS["l_h_down"],
+		1: SHAPES_ROTATIONS["l_v_left"],
+		2: SHAPES_ROTATIONS["l_h_up"],
+		3: SHAPES_ROTATIONS["l_v_right"],
+	},
+	Globals.DefaultShapes.S: {
+		0: SHAPES_ROTATIONS["s_h"],
+		1: SHAPES_ROTATIONS["s_v"],
+		2: SHAPES_ROTATIONS["s_h"],
+		3: SHAPES_ROTATIONS["s_v"],
+	},
+	Globals.DefaultShapes.Z: {
+		0: SHAPES_ROTATIONS["z_h"],
+		1: SHAPES_ROTATIONS["z_v"],
+		2: SHAPES_ROTATIONS["z_h"],
+		3: SHAPES_ROTATIONS["z_v"],
+	},
+	Globals.DefaultShapes.T: {
+		0: SHAPES_ROTATIONS["t_down"],
+		1: SHAPES_ROTATIONS["t_left"],
+		2: SHAPES_ROTATIONS["t_up"],
+		3: SHAPES_ROTATIONS["t_right"],
+	},
+}
+
+
 # shape is Globals.DefaultShapes
 func from_shape(shape: int):
     self.color = randi() % Globals.Colors.size()
