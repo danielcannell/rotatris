@@ -55,20 +55,30 @@ func process_inputs():
         return
 
     var move := 0
+    var rotate := 0
+
     if Input.is_action_just_pressed("move_left"):
         move -= 1
     if Input.is_action_just_pressed("move_right"):
         move += 1
+    if Input.is_action_just_pressed("rotate_cw"):
+        rotate += 1
+    if Input.is_action_just_pressed("rotate_ccw"):
+        rotate -= 1
 
-    if move:
-        var step := [move * +self.gravity[1], move * -self.gravity[0]]
-
+    if move or rotate:
         var grid := {}
         for block in self.blocks:
             block.fill_grid(grid)
 
-        if self.controlled_block.can_move(grid, step):
-            self.controlled_block.move(grid, step, false)
+        if move:
+            var step := [move * +self.gravity[1], move * -self.gravity[0]]
+
+            if self.controlled_block.can_move(grid, step):
+                self.controlled_block.move(grid, step, false)
+
+        if rotate:
+            self.controlled_block.try_rotate(grid, rotate)
 
 
 # Update the grid coordinates of all blocks

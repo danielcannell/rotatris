@@ -138,3 +138,32 @@ func move(grid: Dictionary, step: Array, smooth := true):
             self._old_coord[0] = self.coord[0]
         if step[1]:
             self._old_coord[1] = self.coord[1]
+
+
+func try_rotate(grid: Dictionary, rotate: int):
+    var new_squares := [] + self.squares
+    for i in range(rotate):
+        for j in range(len(new_squares)):
+            new_squares[j] = [-new_squares[j][1], new_squares[j][0]]
+
+    for square in new_squares:
+        var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
+
+        # Check if this square is occupied
+        if grid.has(c) and grid[c] != self.id:
+            return false
+
+        # Check if this square is leaving the grid bounds
+        if c[0] > Globals.GRID_HALF_WIDTH:
+            return false
+        if c[0] <= -Globals.GRID_HALF_WIDTH:
+            return false
+        if c[1] > Globals.GRID_HALF_WIDTH:
+            return false
+        if c[1] <= -Globals.GRID_HALF_WIDTH:
+            return false
+
+    self.erase_grid(grid)
+    self.squares = new_squares
+    self.update_shape()
+    self.fill_grid(grid)
