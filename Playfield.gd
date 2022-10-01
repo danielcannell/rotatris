@@ -1,9 +1,12 @@
 extends Node2D
 
 
-const TIME_TO_MOVE_1_SQUARE := 0.5
+const TIME_TO_MOVE_1_SQUARE := 0.25
 const MOVES_PER_GRAVITY_CHANGE := int(3 / TIME_TO_MOVE_1_SQUARE)
 const GRID_WIDTH := 10
+
+
+signal score_changed
 
 
 # All blocks currently in play
@@ -49,9 +52,29 @@ func _process(delta):
 
 # Update the grid coordinates of all blocks
 func update_block_positions():
-    for block in blocks:
-        var new_coord = [block.coord[0] + self.gravity[0], block.coord[1] + self.gravity[1]]
-        block.coord = new_coord
+    var grid := {}
+    var done := false
+
+    # Fill in a border
+    var offset := int(GRID_WIDTH / 2)
+    for i in range(GRID_WIDTH):
+        grid[[offset, i]] = Globals.INVALID_BLOCK_ID
+        grid[[-offset, i]] = Globals.INVALID_BLOCK_ID
+        grid[[i, offset]] = Globals.INVALID_BLOCK_ID
+        grid[[i, -offset]] = Globals.INVALID_BLOCK_ID
+
+    for block in self.blocks:
+        block.fill_grid(grid)
+        block.moved = false
+
+    while not done:
+        done = true
+
+        for block in self.blocks:
+            if not block.moved and block.can_move(grid, self.gravity):
+                block.move(grid, self.gravity)
+                block.moved = true
+                done = false
 
 
 func rotate_gravity():
@@ -63,3 +86,4 @@ func spawn_random_block():
     block.random()
     add_child(block)
     self.blocks.append(block)
+    self.emit_signal("score_changed", self.blocks.size())

@@ -29,3 +29,12 @@ var ColorLookup = {
     Colors.ORANGE: Color(1, 0.5, 0),
     Colors.PURPLE: Color(0.5, 0, 0.5)
 }
+
+
+const INVALID_BLOCK_ID = 0
+var block_id = 0
+
+
+func allocate_block_id():
+    self.block_id += 1
+    return self.block_id

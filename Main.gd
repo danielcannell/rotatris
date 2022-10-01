@@ -1,11 +1,9 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-    pass # Replace with function body.
+    $Playfield.connect("score_changed", self, "on_score_changed")
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#    pass
+func on_score_changed(value: int):
+    $UI/ScoreLabel.text = "Score: " + str(value)
