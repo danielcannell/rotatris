@@ -9,6 +9,12 @@ var color: int
 # Global grid coordinate of the local (0, 0) position
 var coord := [0, 0]
 
+# Unique block ID
+var id := Globals.INVALID_BLOCK_ID
+
+# Has this block been moved this turn?
+var moved := false
+
 
 # shape is Globals.DefaultShapes
 func from_shape(shape: int):
@@ -36,6 +42,10 @@ func random():
     self.from_shape(randi() % Globals.DefaultShapes.size())
 
 
+func _init():
+    self.id = Globals.allocate_block_id()
+
+
 func _ready():
     update_shape()
 
@@ -60,4 +70,33 @@ func update_shape():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-   self.position = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])
+    self.position = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])
+
+
+func fill_grid(grid: Dictionary):
+    for square in self.squares:
+        var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
+        grid[c] = self.id
+
+
+func erase_grid(grid: Dictionary):
+    for square in self.squares:
+        var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
+        grid.erase(c)
+
+
+func can_move(grid: Dictionary, step: Array):
+    var new_coord := [self.coord[0] + step[0], self.coord[1] + step[1]]
+
+    for square in self.squares:
+        var c := [new_coord[0] + square[0], new_coord[1] + square[1]]
+        if grid.has(c) and grid[c] != self.id:
+            return false
+
+    return true
+
+
+func move(grid: Dictionary, step: Array):
+    self.erase_grid(grid)
+    self.coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
+    self.fill_grid(grid)
