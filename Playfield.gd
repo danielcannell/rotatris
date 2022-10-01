@@ -6,6 +6,9 @@ const MOVES_PER_GRAVITY_CHANGE := int(3 / TIME_TO_MOVE_1_SQUARE)
 const GRID_WIDTH := 10
 
 
+signal score_changed
+
+
 # All blocks currently in play
 var blocks: Array
 
@@ -63,3 +66,4 @@ func spawn_random_block():
     block.random()
     add_child(block)
     self.blocks.append(block)
+    self.emit_signal("score_changed", self.blocks.size())

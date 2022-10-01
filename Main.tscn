@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Playfield.gd" type="Script" id=2]
+[ext_resource path="res://ui_font.tres" type="DynamicFont" id=3]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,6 +11,20 @@ script = ExtResource( 1 )
 margin_right = 1024.0
 margin_bottom = 600.0
 color = Color( 0, 0, 0, 1 )
+
+[node name="UI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+margin_left = 854.0
+margin_top = 20.0
+margin_right = 1006.0
+margin_bottom = 58.0
+grow_horizontal = 0
+custom_fonts/font = ExtResource( 3 )
+text = "Score: 125"
+align = 2
 
 [node name="Playfield" type="Node2D" parent="."]
 position = Vector2( 512, 300 )
