@@ -42,6 +42,14 @@ func from_shape(shape: int):
     else:
         assert(false)
 
+    # Super hacky code!!! REMOVE ME
+    var centre := [0, 0]
+    for square in self.squares:
+        centre = [centre[0] + square[0], centre[1] + square[1]]
+    centre = [int(centre[0] / 4), int(centre[1] / 4)]
+    for i in range(len(self.squares)):
+        self.squares[i] = [self.squares[i][0] - centre[0], self.squares[i][1] - centre[1]]
+
 
 func random():
     self.from_shape(randi() % Globals.DefaultShapes.size())
