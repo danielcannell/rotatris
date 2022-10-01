@@ -4,7 +4,7 @@ extends Node2D
 const BLOCK_SIZE: int = 32
 
 var squares: Array; # of (int, int)
-var color: int
+var color: int;  # Colors
 
 # Global grid coordinate of the local (0, 0) position
 var coord := [0, 0]
@@ -12,7 +12,7 @@ var coord := [0, 0]
 
 # shape is Globals.DefaultShapes
 func from_shape(shape: int):
-    self.color = randi() % Globals.ShapeColors.size()
+    self.color = randi() % Globals.Colors.size()
 
     if shape == Globals.DefaultShapes.I:
         self.squares = [[0,0], [0,1], [0,2], [0,3]]
@@ -50,11 +50,10 @@ func update_shape():
         var x: int = pos[0]
         var y: int = pos[1]
 
-        var child := AnimatedSprite.new()
+        var child := Sprite.new()
         child.position = Vector2(x, y) * BLOCK_SIZE
-        child.frames = load("res://Art/blocks.tres")
-        child.animation = "default"
-        child.frame = self.color % child.frames.get_frame_count(child.animation)
+        child.texture = load("res://Art/box.png")
+        child.modulate = Globals.ColorLookup[color]
         add_child(child)
 
 
