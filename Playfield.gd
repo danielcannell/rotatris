@@ -114,6 +114,7 @@ func update_block_positions() -> Dictionary:
 func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
     for id in to_split:
         var block = self.blocks[id]
+        assert(block.squares.size() > 0)
         block.erase_grid(grid)
         var new_blocks := split_block(block, line)
         self.blocks.erase(id)
@@ -143,6 +144,8 @@ func clear_full_lines(grid: Dictionary):
             # if column is full
             if full:
                 _split_blocks(grid, blocks_in_row, line)
+                for block in self.blocks.values():
+                    assert(block.squares.size() > 0)
 
     else:
         # for each row
@@ -162,6 +165,8 @@ func clear_full_lines(grid: Dictionary):
             # if row is full
             if full:
                 _split_blocks(grid, blocks_in_row, line)
+                for block in self.blocks.values():
+                    assert(block.squares.size() > 0)
 
 
 func rotate_gravity():
@@ -214,6 +219,7 @@ func split_block(block: Block, line: Array) -> Array:
 
         var new_block = Block.new()
         new_block.squares = new_block_squares
+        assert(new_block_squares.size() > 0)
         new_block.coord = block.coord
         new_block.color = block.color
         new_block.id = Globals.allocate_block_id()

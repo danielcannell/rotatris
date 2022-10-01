@@ -97,7 +97,8 @@ func from_shape(shape: int):
     self.color = randi() % Globals.Colors.size()
     self.shape = shape
     self.rot = randi() % 4
-    self.squares = SHAPE_ROT_LOOKUP[self.shape][self.rot]
+    self.squares = [] + SHAPE_ROT_LOOKUP[self.shape][self.rot]
+    assert(self.squares.size() == 4)
 
 
 func random():
@@ -199,7 +200,7 @@ func move(grid: Dictionary, step: Array, smooth := true):
 
 func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
     var new_rot = (self.rot + 1) % 4
-    var new_squares = SHAPE_ROT_LOOKUP[self.shape][new_rot]
+    var new_squares = [] + SHAPE_ROT_LOOKUP[self.shape][new_rot]
 
     for square in new_squares:
         var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
@@ -219,6 +220,7 @@ func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
             return false
 
     self.erase_grid(grid)
+    assert(new_squares.size() > 0)
     self.squares = new_squares
     self.rot = new_rot
     self.update_shape()
