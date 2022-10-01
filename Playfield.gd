@@ -1,7 +1,6 @@
 extends Node2D
 
 
-var Block: PackedScene = preload("res://Block.tscn")
 var blocks: Array
 
 
@@ -10,7 +9,8 @@ func _ready():
     self.blocks = []
 
     for x in range(3):
-        var block: Node2D = Block.instance(x)
+        var block: Node2D = Block.new(x)
+        block.position = Vector2(50 + x * 100, 50)
         add_child(block)
         self.blocks.append(block)
 

@@ -1,13 +1,19 @@
+class_name Block
 extends Node2D
 
-const BLOCK_SIZE: int = 16
+const BLOCK_SIZE: int = 32
 
 var shape: int
 var squares: Array; # of (int, int)
+var color: int
+
 
 func _init(_shape: int):
     self.shape = _shape
     self.squares = []
+
+    # TODO random color
+    self.color = _shape
 
     if _shape == 0:
         self.squares = [[0,0], [0,1], [0,2], [0,3]]
@@ -33,9 +39,13 @@ func update_shape():
         var x: int = pos[0]
         var y: int = pos[1]
 
-        var child := Sprite.new()
+        var child := AnimatedSprite.new()
         child.position = Vector2(x, y) * BLOCK_SIZE
-        # TODO child texture and color
+        child.frames = load("res://Art/blocks.tres")
+        child.animation = "default"
+        child.frame = self.color
+        add_child(child)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
