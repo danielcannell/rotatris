@@ -91,3 +91,47 @@ func spawn_random_block():
     self.blocks.append(block)
     self.controlled_block = block
     self.emit_signal("score_changed", self.blocks.size())
+
+
+# line is a list of all cells to delete
+# returns array of remaining blocks (may be empty)
+func split_block(block: Block, line: Array) -> Array:
+    var res := []
+
+    # Delete any cells on the cleared line
+    for cell in line:
+        var remove := -1
+        for i in range(block.squares.size()):
+            var square = block.squares[i]
+            var adj = [square[0] + cell[0], square[1] + cell[1]]
+            if adj[0] == cell[0] and adj[1] == cell[1]:
+                remove = i
+                break
+        if remove != -1:
+            block.squares.remove(remove)
+
+    # Find connected regions in 'squares' to create the new blocks
+    while block.squares.size() > 0:
+        var new_block_squares := []
+        new_block_squares.append(block.squares.pop_back())
+        var i := 0
+        while i < block.squares.size():
+            var square = block.squares[i]
+            for check in new_block_squares:
+                if ((square[0] == check[0] and abs(square[1] - check[1]) == 1) or # adjacent y
+                    (square[1] == check[1] and abs(square[0] - check[0]) == 1)): # adjacent x
+                    # adjacent cell, add to list
+                    new_block_squares.append(block.squares.pop_at(i))
+                    i -= 1
+                    break
+            i += 1
+
+        var new_block = Block.new()
+        new_block.squares = new_block_squares
+        new_block.coord = block.coord
+        new_block.color = block.color
+        new_block.id = Globals.allocate_block_id()
+        new_block.moved = block.moved
+        res.append(new_block)
+
+    return res
