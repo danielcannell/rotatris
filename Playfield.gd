@@ -16,9 +16,6 @@ var gravity_counter := 0
 # Current gravity vector
 var gravity: Array = [0, 1]
 
-# TODO: Should spawn when falling tetronimo lands
-var time_until_spawn := 0.0
-
 # The block current controlled by user input
 var controlled_block : Block = null
 
@@ -45,11 +42,8 @@ func _process(delta):
 
     update_camera(delta)
 
-    self.time_until_spawn -= delta
-    if self.time_until_spawn < 0.0:
+    if self.controlled_block == null:
         spawn_random_block()
-
-        self.time_until_spawn = 5.0
 
 
 # Update the grid coordinates of all blocks
