@@ -102,7 +102,7 @@ func from_shape(shape: int):
 
 
 func random():
-    self.from_shape(Globals.DefaultShapes.I)
+    self.from_shape(randi() % Globals.DefaultShapes.size())
 
 
 func _init():
