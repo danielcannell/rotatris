@@ -39,13 +39,13 @@ func _process(delta):
     update_camera(delta)
 
     if self.controlled_block == null:
-        spawn_random_block()
-
         # We do this here for now so that we don't rotate while the falling
         # block is outside the grid
         if self.gravity_counter >= Globals.MOVES_PER_GRAVITY_CHANGE:
             self.gravity_counter = 0
             self.rotate_gravity()
+
+        spawn_random_block()
 
     process_inputs()
 
