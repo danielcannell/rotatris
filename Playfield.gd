@@ -8,8 +8,9 @@ var blocks: Array
 func _ready():
     self.blocks = []
 
-    for x in range(3):
-        var block: Node2D = Block.new(x)
+    for x in range(7):
+        var block: Node2D = Block.new()
+        block.from_shape(x)
         block.position = Vector2(50 + x * 100, 50)
         add_child(block)
         self.blocks.append(block)

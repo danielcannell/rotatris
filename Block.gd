@@ -3,26 +3,34 @@ extends Node2D
 
 const BLOCK_SIZE: int = 32
 
-var shape: int
 var squares: Array; # of (int, int)
 var color: int
 
 
-func _init(_shape: int):
-    self.shape = _shape
-    self.squares = []
+# shape is Globals.DefaultShapes
+func from_shape(shape: int):
+    self.color = randi() % Globals.ShapeColors.size()
 
-    # TODO random color
-    self.color = _shape
-
-    if _shape == 0:
+    if shape == Globals.DefaultShapes.I:
         self.squares = [[0,0], [0,1], [0,2], [0,3]]
-    elif _shape == 1:
+    elif shape == Globals.DefaultShapes.J:
         self.squares = [[0,0], [0,1], [1,1], [2,1]]
-    elif _shape == 2:
+    elif shape == Globals.DefaultShapes.L:
+        self.squares = [[0,0], [0,1], [1,0], [2,0]]
+    elif shape == Globals.DefaultShapes.O:
         self.squares = [[0,0], [0,1], [1,1], [1,0]]
+    elif shape == Globals.DefaultShapes.Z:
+        self.squares = [[0,0], [0,1], [1,1], [1,2]]
+    elif shape == Globals.DefaultShapes.S:
+        self.squares = [[1,0], [1,1], [0,1], [0,2]]
+    elif shape == Globals.DefaultShapes.T:
+        self.squares = [[0,0], [1,0], [1,1], [2,0]]
     else:
         assert(false)
+
+
+func random():
+    self.from_shape(randi() % Globals.DefaultShapes.size())
 
 
 func _ready():
@@ -43,7 +51,7 @@ func update_shape():
         child.position = Vector2(x, y) * BLOCK_SIZE
         child.frames = load("res://Art/blocks.tres")
         child.animation = "default"
-        child.frame = self.color
+        child.frame = self.color % child.frames.get_frame_count(child.animation)
         add_child(child)
 
 

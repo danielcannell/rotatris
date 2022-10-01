@@ -24,6 +24,10 @@ config/name="Rotatris"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Globals="*res://Globals.gd"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
