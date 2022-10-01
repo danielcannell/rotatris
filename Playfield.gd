@@ -171,7 +171,7 @@ func rotate_gravity():
 func spawn_random_block():
     var block: Node2D = Block.new()
     block.random()
-    block.coord = [-(Globals.GRID_HALF_WIDTH + 2) * gravity[0], -(Globals.GRID_HALF_WIDTH + 2) * gravity[1]] # TODO: This should be in the block class
+    block.coord = [-(Globals.GRID_HALF_WIDTH + 10) * gravity[0], -(Globals.GRID_HALF_WIDTH + 10) * gravity[1]] # TODO: This should be in the block class
     block.update_position()
     add_child(block)
     self.blocks[block.id] = block
