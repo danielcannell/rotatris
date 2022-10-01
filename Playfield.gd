@@ -4,8 +4,8 @@ extends Node2D
 signal score_changed
 
 
-# All blocks currently in play
-var blocks: Array
+# All blocks currently in play, by ID
+var blocks: Dictionary
 
 # Time since the last 1 square move
 var time := 0.0
@@ -24,7 +24,7 @@ var boundary: Boundary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    self.blocks = []
+    self.blocks = {}
     boundary = Boundary.new()
     add_child(boundary)
 
@@ -70,7 +70,7 @@ func process_inputs():
 
     if move or rotate:
         var grid := {}
-        for block in self.blocks:
+        for block in self.blocks.values():
             block.fill_grid(grid)
 
         if move:
@@ -88,14 +88,14 @@ func update_block_positions():
     var grid := {}
     var done := false
 
-    for block in self.blocks:
+    for block in self.blocks.values():
         block.fill_grid(grid)
         block.moved = false
 
     while not done:
         done = true
 
-        for block in self.blocks:
+        for block in self.blocks.values():
             var step := self.gravity
 
             if not block.moved and block.can_move(grid, step):
@@ -118,7 +118,7 @@ func spawn_random_block():
     block.coord = [-(Globals.GRID_HALF_WIDTH + 2) * gravity[0], -(Globals.GRID_HALF_WIDTH + 2) * gravity[1]] # TODO: This should be in the block class
     block.update_position()
     add_child(block)
-    self.blocks.append(block)
+    self.blocks[block.id] = block
     self.controlled_block = block
     self.emit_signal("score_changed", self.blocks.size())
 
