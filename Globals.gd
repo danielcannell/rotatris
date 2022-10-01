@@ -31,6 +31,12 @@ var ColorLookup = {
 }
 
 
+const TIME_TO_MOVE_1_SQUARE := 0.25
+const MOVES_PER_GRAVITY_CHANGE := int(3 / TIME_TO_MOVE_1_SQUARE)
+const GRID_HALF_WIDTH := 5
+const GRID_WIDTH := GRID_HALF_WIDTH * 2
+
+
 const INVALID_BLOCK_ID = 0
 var block_id = 0
 

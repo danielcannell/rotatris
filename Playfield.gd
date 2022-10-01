@@ -1,11 +1,6 @@
 extends Node2D
 
 
-const TIME_TO_MOVE_1_SQUARE := 0.25
-const MOVES_PER_GRAVITY_CHANGE := int(3 / TIME_TO_MOVE_1_SQUARE)
-const GRID_WIDTH := 10
-
-
 signal score_changed
 
 
@@ -34,12 +29,12 @@ func _ready():
 func _process(delta):
     self.time += delta
 
-    if self.time > TIME_TO_MOVE_1_SQUARE:
-        self.time = fmod(self.time, TIME_TO_MOVE_1_SQUARE)
+    if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
+        self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
         update_block_positions()
 
         self.gravity_counter += 1
-        if self.gravity_counter >= MOVES_PER_GRAVITY_CHANGE:
+        if self.gravity_counter >= Globals.MOVES_PER_GRAVITY_CHANGE:
             self.gravity_counter = 0
             self.rotate_gravity()
 
@@ -54,14 +49,6 @@ func _process(delta):
 func update_block_positions():
     var grid := {}
     var done := false
-
-    # Fill in a border
-    var offset := int(GRID_WIDTH / 2)
-    for i in range(GRID_WIDTH):
-        grid[[offset, i]] = Globals.INVALID_BLOCK_ID
-        grid[[-offset, i]] = Globals.INVALID_BLOCK_ID
-        grid[[i, offset]] = Globals.INVALID_BLOCK_ID
-        grid[[i, -offset]] = Globals.INVALID_BLOCK_ID
 
     for block in self.blocks:
         block.fill_grid(grid)

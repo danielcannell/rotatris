@@ -89,7 +89,19 @@ func can_move(grid: Dictionary, step: Array):
 
     for square in self.squares:
         var c := [new_coord[0] + square[0], new_coord[1] + square[1]]
+
+        # Check if this square is occupied
         if grid.has(c) and grid[c] != self.id:
+            return false
+
+        # Check if this square is leaving the grid bounds
+        if step[0] > 0 and c[0] >= Globals.GRID_HALF_WIDTH:
+            return false
+        if step[0] < 0 and c[0] <= -Globals.GRID_HALF_WIDTH:
+            return false
+        if step[1] > 0 and c[1] >= Globals.GRID_HALF_WIDTH:
+            return false
+        if step[1] < 0 and c[1] <= Globals.GRID_HALF_WIDTH:
             return false
 
     return true
