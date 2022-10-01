@@ -6,6 +6,9 @@ const BLOCK_SIZE: int = 32
 var squares: Array; # of (int, int)
 var color: int
 
+# Global grid coordinate of the local (0, 0) position
+var coord := [0, 0]
+
 
 # shape is Globals.DefaultShapes
 func from_shape(shape: int):
@@ -56,5 +59,5 @@ func update_shape():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#    pass
+func _process(delta):
+   self.position = BLOCK_SIZE * Vector2(self.coord[0], self.coord[1])

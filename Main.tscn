@@ -12,4 +12,5 @@ margin_bottom = 600.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Playfield" type="Node2D" parent="."]
+position = Vector2( 512, 300 )
 script = ExtResource( 2 )
