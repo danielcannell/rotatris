@@ -114,7 +114,7 @@ func can_move(grid: Dictionary, step: Array):
             return false
         if step[1] > 0 and c[1] >= Globals.GRID_HALF_WIDTH:
             return false
-        if step[1] < 0 and c[1] <= Globals.GRID_HALF_WIDTH:
+        if step[1] < 0 and c[1] <= -Globals.GRID_HALF_WIDTH:
             return false
 
     return true
