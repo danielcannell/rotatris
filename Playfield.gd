@@ -19,11 +19,13 @@ var gravity: Array = [0, 1]
 # The block current controlled by user input
 var controlled_block : Block = null
 
+var boundary: Boundary
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
     self.blocks = []
-    var boundary = Boundary.new()
+    boundary = Boundary.new()
     add_child(boundary)
 
 
