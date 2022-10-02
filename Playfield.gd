@@ -219,10 +219,6 @@ func delete_fallen_blocks():
 
     for id in to_delete:
         var block: Block = self.blocks[id]
-
-        print(block.coord)
-        assert(self.controlled_block == null or self.controlled_block.id != id)
-
         self.blocks.erase(id)
         self.remove_child(block)
         block.queue_free()
