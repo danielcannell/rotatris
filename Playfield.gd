@@ -218,7 +218,6 @@ func rotate_gravity(grid: Dictionary):
         var row: int = -Globals.GRID_HALF_WIDTH * self.gravity[0]
         if row < 0:
             row -= 1
-        print(row)
         var to_slice := []
         var line := []
         for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
@@ -234,7 +233,6 @@ func rotate_gravity(grid: Dictionary):
         var col: int = Globals.GRID_HALF_WIDTH * self.gravity[1]
         if col < 0:
             col -= 1
-        print(col)
         var to_slice := []
         var line := []
         for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
