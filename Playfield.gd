@@ -97,8 +97,8 @@ func _process(delta):
     var grid := {}
 
     # Move all blocks downwards
+    Globals.TIME_TO_MOVE_1_SQUARE *= exp(-delta * Globals.SPEED_UP_RATE)
     if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
-        Globals.TIME_TO_MOVE_1_SQUARE *= Globals.SPEED_UP_RATE
         self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
         var any_moves := update_block_positions(grid)
         var any_clears := clear_full_lines(grid)
