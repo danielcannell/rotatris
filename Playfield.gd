@@ -6,6 +6,9 @@ signal cost_changed
 signal game_over
 signal countdown_changed
 
+const Explosion = preload("res://RowEffect.tscn")
+const Square = preload("res://Square.tscn")
+
 
 # Is the game in progress?
 var game_running := false
@@ -210,6 +213,19 @@ func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
             self.add_child(x)
 
 
+func explode_line(line, direction: int):
+    # var start = -Globals.GRID_HALF_WIDTH
+    var effect = Explosion.instance()
+    add_child(effect)
+    if direction == 1:
+        effect.rotation = self.rotation
+        effect.position = Vector2(0, line * Globals.BLOCK_SIZE)
+    else:
+        effect.rotation = self.rotation
+        effect.position = Vector2(line * Globals.BLOCK_SIZE, 0)
+    effect.run()
+
+
 # Clear any full lines and update the score. Returns true if any lines cleared.
 func clear_full_lines(grid: Dictionary) -> bool:
     var lines_cleared := 0
@@ -219,6 +235,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
             var full := true
             var blocks_in_row := []
             var line := []
+            var colors := []
             for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
                 line.append([col, row])
                 var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
@@ -227,6 +244,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
                     break
                 if not blocks_in_row.has(id):
                     blocks_in_row.append(id)
+                colors.append(self.blocks[id].color)
 
             # if column is full
             if full:
@@ -234,6 +252,14 @@ func clear_full_lines(grid: Dictionary) -> bool:
                 _split_blocks(grid, blocks_in_row, line)
                 for block in self.blocks.values():
                     assert(block.squares.size() > 0)
+                    for i in range(line.size()):
+                        var coord = line[i]
+                        var color = colors[i]
+                        var square = Square.instance()
+                        square.set_coord(coord)
+                        square.set_color(color)
+                        add_child(square)
+                        square.dissolve()
 
     else:
         # for each row
@@ -241,6 +267,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
             var full := true
             var blocks_in_row := []
             var line := []
+            var colors := []
             for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
                 line.append([col, row])
                 var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
@@ -249,6 +276,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
                     break
                 if not blocks_in_row.has(id):
                     blocks_in_row.append(id)
+                colors.append(self.blocks[id].color)
 
             # if row is full
             if full:
@@ -256,6 +284,14 @@ func clear_full_lines(grid: Dictionary) -> bool:
                 _split_blocks(grid, blocks_in_row, line)
                 for block in self.blocks.values():
                     assert(block.squares.size() > 0)
+                for i in range(line.size()):
+                    var coord = line[i]
+                    var color = colors[i]
+                    var square = Square.instance()
+                    square.set_coord(coord)
+                    square.set_color(color)
+                    add_child(square)
+                    square.dissolve()
 
     if lines_cleared > 0:
         # 1 point for 1 line, 2 for 2 lines, 4 for 3 lines, 8 for 4 lines

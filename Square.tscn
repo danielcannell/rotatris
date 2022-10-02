@@ -5,8 +5,8 @@
 [ext_resource path="res://Art/dissolve.gdshader" type="Shader" id=3]
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.211823, 0.396552, 0.53202, 0.613301, 0.834975 )
-colors = PoolColorArray( 0.0784314, 0.0784314, 0.0784314, 0, 0.594845, 0.0480785, 0.946777, 1, 0.380325, 0.378085, 0.0527383, 0.327586, 0.87451, 0.807843, 0.105882, 1, 1, 0.0352941, 0.74902, 0.643137, 1, 0.637467, 0.905683, 0.865892 )
+offsets = PoolRealArray( 0, 0.0394089, 0.157635, 0.261084, 0.438424, 0.741379, 0.931035 )
+colors = PoolColorArray( 0.0784314, 0.0784314, 0.0784314, 0, 0.594845, 0.0480785, 0.946777, 1, 0.380325, 0.378085, 0.0527383, 0.327586, 0.87451, 0.807843, 0.105882, 1, 0.893816, 0.688989, 0.204826, 0.945098, 1, 0.0352941, 0.74902, 0.643137, 0.637467, 1, 0.983006, 0.865892 )
 
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
@@ -18,8 +18,9 @@ noise = SubResource( 4 )
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
-shader_param/burn_size = 0.375
-shader_param/burn_position = -1.0
+shader_param/burn_size = 0.251
+shader_param/burn_position = -0.677
+shader_param/rand = Vector2( 0, 0 )
 shader_param/noise_tex = SubResource( 5 )
 shader_param/burn_ramp = SubResource( 3 )
 
