@@ -34,14 +34,19 @@ func update_ui():
         $Playfield.visible = false
         $UI.visible = false
         $IntroUI.visible = true
+        $GameOverUI.visible = false
     elif state == GameState.PLAYING:
         # Show the game
         $Playfield.visible = true
         $UI.visible = true
         $IntroUI.visible = false
+        $GameOverUI.visible = false
     elif state == GameState.GAME_OVER:
-        # TODO
-        pass
+        # Show the game-over text
+        $Playfield.visible = true
+        $UI.visible = true
+        $IntroUI.visible = false
+        $GameOverUI.visible = true
 
 
 func on_score_changed(value: int):
@@ -85,4 +90,5 @@ func _process(delta):
 
 
 func on_game_over():
-    print("GAME OVER")
+    $Playfield.pause()
+    state = GameState.GAME_OVER

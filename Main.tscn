@@ -35,7 +35,7 @@ text = "Rotatris"
 align = 1
 uppercase = true
 
-[node name="DroppedBlocksLabel" type="Label" parent="IntroUI"]
+[node name="IntroText" type="Label" parent="IntroUI"]
 margin_top = 320.0
 margin_right = 600.0
 margin_bottom = 821.0
@@ -49,6 +49,28 @@ Space or S to drop
 Blocks above the line will fall off when the board rotates. Drop too many and it's game over!
 
 Press Space to start"
+align = 1
+autowrap = true
+
+[node name="GameOverUI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="GameOverLabel" type="Label" parent="GameOverUI"]
+margin_top = 300.0
+margin_right = 600.0
+margin_bottom = 380.0
+custom_fonts/font = ExtResource( 5 )
+text = "Game over!"
+align = 1
+uppercase = true
+
+[node name="RestartText" type="Label" parent="GameOverUI"]
+margin_top = 500.0
+margin_right = 600.0
+margin_bottom = 600.0
+custom_fonts/font = ExtResource( 3 )
+text = "Press Space to play again!"
 align = 1
 autowrap = true
 
