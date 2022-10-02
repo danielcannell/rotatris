@@ -133,7 +133,8 @@ func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
         assert(block.squares.size() > 0)
         block.erase_grid(grid)
         var new_blocks := split_block(block, line)
-        self.blocks.erase(id)
+        var found := self.blocks.erase(id)
+        assert(found, "removed block did not exist")
         self.remove_child(block)
         for x in new_blocks:
             x.fill_grid(grid)

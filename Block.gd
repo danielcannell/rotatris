@@ -93,9 +93,9 @@ const SHAPE_ROT_LOOKUP = {
 
 
 # shape is Globals.DefaultShapes
-func from_shape(shape: int):
+func from_shape(shape_: int):
     self.color = randi() % Globals.Colors.size()
-    self.shape = shape
+    self.shape = shape_
     self.rot = randi() % 4
     self.squares = [] + SHAPE_ROT_LOOKUP[self.shape][self.rot]
     assert(self.squares.size() == 4)
@@ -156,7 +156,7 @@ func fill_grid(grid: Dictionary):
 func erase_grid(grid: Dictionary):
     for square in self.squares:
         var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
-        grid.erase(c)
+        var _dontcare := grid.erase(c)
 
 
 func can_move(grid: Dictionary, step: Array):

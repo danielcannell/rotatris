@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _ready():
-    $Playfield.connect("score_changed", self, "on_score_changed")
+    var _dontcare := $Playfield.connect("score_changed", self, "on_score_changed")
     on_score_changed($Playfield.score)
 
 
