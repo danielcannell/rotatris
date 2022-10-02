@@ -63,6 +63,7 @@ func _process(delta):
             spawn_random_block()
 
     process_inputs()
+    delete_fallen_blocks()
 
 
 func update_score(val: int):
@@ -147,6 +148,7 @@ func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
         var found := self.blocks.erase(id)
         assert(found, "removed block did not exist")
         self.remove_child(block)
+        block.queue_free()
         for x in new_blocks:
             x.fill_grid(grid)
             self.blocks[x.id] = x
@@ -206,6 +208,21 @@ func clear_full_lines(grid: Dictionary) -> bool:
         self.update_score(new_score)
 
     return lines_cleared > 0
+
+
+func delete_fallen_blocks():
+    var to_delete := []
+
+    for id in self.blocks:
+        if self.blocks[id].fallen_off(self.gravity):
+            to_delete.append(id)
+
+    for id in to_delete:
+        var block: Block = self.blocks[id]
+        var found := self.blocks.erase(id)
+        assert(found, "deleted block was not found")
+        self.remove_child(block)
+        block.queue_free()
 
 
 func rotate_gravity(grid: Dictionary):

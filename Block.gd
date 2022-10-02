@@ -274,3 +274,12 @@ func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
     self.rot = new_rot
     self.update_shape()
     self.fill_grid(grid)
+
+
+# Check if this has fallen off the bottom of the screen
+func fallen_off(gravity: Array):
+    for square in self.squares:
+        var dist: int = (coord[0] + square[0]) * gravity[0] + (coord[1] + square[1]) * gravity[1]
+        if dist > Globals.GRID_WIDTH:
+            return true
+    return false
