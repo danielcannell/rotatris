@@ -6,6 +6,12 @@ signal cost_changed
 signal game_over
 
 
+# Is the game in progress?
+var game_running := false
+
+# Small timer at the start to avoid double-pressed inputs from the menu
+var intro_timer := 1.0
+
 # Player score
 var score := 0
 
@@ -41,8 +47,34 @@ func _ready():
     add_child(self.boundary)
 
 
+func pause():
+    self.game_running = false
+
+
+func start_game():
+    self.game_running = true
+    self.intro_timer = 1.0
+    self.update_score(0)
+    for id in self.blocks:
+        var block = self.blocks[id]
+        self.remove_child(block)
+        block.queue_free()
+    self.blocks.clear()
+    self.time = 0.0
+    self.gravity_counter = 0
+    self.controlled_block = null
+    self.rotation = atan2(self.gravity[0], self.gravity[1])
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+    if not game_running:
+        return
+
+    self.intro_timer -= delta
+    if self.intro_timer > 0:
+        return
+
     self.time += delta
 
     update_camera(delta)
