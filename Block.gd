@@ -96,6 +96,16 @@ const SHAPE_ROT_LOOKUP = {
     },
 }
 
+const SHAPE_COLORS = {
+    Globals.DefaultShapes.I: Globals.Colors.CYAN,
+    Globals.DefaultShapes.O: Globals.Colors.YELLOW,
+    Globals.DefaultShapes.T: Globals.Colors.PURPLE,
+    Globals.DefaultShapes.S: Globals.Colors.GREEN,
+    Globals.DefaultShapes.Z: Globals.Colors.RED,
+    Globals.DefaultShapes.L: Globals.Colors.ORANGE,
+    Globals.DefaultShapes.J: Globals.Colors.BLUE,
+}
+
 
 # bits
 # left, top, right, bottom,
@@ -137,7 +147,7 @@ func find_box_sprite_idx(pos: Array) -> int:
 
 # shape is Globals.DefaultShapes
 func from_shape(shape_: int):
-    self.color = randi() % Globals.Colors.size()
+    self.color = SHAPE_COLORS[shape_]
     self.shape = shape_
     self.rot = randi() % 4
     self.squares = [] + SHAPE_ROT_LOOKUP[self.shape][self.rot]
