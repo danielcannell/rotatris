@@ -11,7 +11,7 @@ signal countdown_changed
 var game_running := false
 
 # Small timer at the start to avoid double-pressed inputs from the menu
-var intro_timer := 1.0
+var intro_timer := 0.1
 
 # Player score
 var score := 0
@@ -54,7 +54,7 @@ func pause():
 
 func start_game():
     self.game_running = true
-    self.intro_timer = 1.0
+    self.intro_timer = 0.1
     self.update_score(0)
     for id in self.blocks:
         var block = self.blocks[id]
