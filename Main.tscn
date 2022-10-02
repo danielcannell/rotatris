@@ -27,9 +27,9 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="NameLabel" type="Label" parent="IntroUI"]
-margin_top = 180.0
+margin_top = 132.0
 margin_right = 600.0
-margin_bottom = 260.0
+margin_bottom = 212.0
 custom_fonts/font = ExtResource( 5 )
 text = "Rotatris"
 align = 1
