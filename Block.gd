@@ -25,7 +25,7 @@ var moved := false
 # Last grid pos before a move
 var _old_coord := [0, 0]
 var _slide_t := 1.0
-var _slide_time := 1.0
+var _slide_time := Globals.TIME_TO_MOVE_1_SQUARE
 
 
 const SHAPES_ROTATIONS = {
@@ -187,18 +187,20 @@ func can_move(grid: Dictionary, step: Array):
 
 func move(grid: Dictionary, step: Array, smooth := true):
     self.erase_grid(grid)
-    var new_coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
-    self._old_coord = self.coord
-    self.coord = new_coord
-    self._slide_t = 0.0
-    self._slide_time = Globals.TIME_TO_MOVE_1_SQUARE
-    self.fill_grid(grid)
+
+    if smooth:
+        self._slide_t = 0.0
+        self._old_coord = self.coord
+
+    self.coord = [self.coord[0] + step[0], self.coord[1] + step[1]]
 
     if not smooth:
         if step[0]:
             self._old_coord[0] = self.coord[0]
         if step[1]:
             self._old_coord[1] = self.coord[1]
+
+    self.fill_grid(grid)
 
 
 func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
