@@ -1,6 +1,10 @@
 class_name Block
 extends Node2D
 
+
+var Square = preload("res://Square.tscn")
+
+
 const BLOCK_SIZE: int = 32
 
 var squares: Array; # of (int, int)
@@ -115,7 +119,7 @@ func _ready():
 
 func update_shape():
     for x in get_children():
-        if x is Sprite:
+        if x is Node2D:
             remove_child(x)
             x.queue_free()
 
@@ -123,10 +127,9 @@ func update_shape():
         var x: int = pos[0]
         var y: int = pos[1]
 
-        var child := Sprite.new()
-        child.position = Vector2(x + 0.5, y - 0.5) * BLOCK_SIZE
-        child.texture = load("res://Art/box.png")
-        child.modulate = Globals.ColorLookup[color]
+        var child: Node2D = Square.instance()
+        child.position = Vector2(x, y) * BLOCK_SIZE
+        child.set_color(color)
         add_child(child)
 
 
