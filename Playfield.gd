@@ -62,9 +62,11 @@ func start_game():
         block.queue_free()
     self.blocks.clear()
     self.time = 0.0
-    self.gravity_counter = 0
+    self.rotate_countdown = Globals.ROTATE_INTERVAL
     self.controlled_block = null
     self.rotation = atan2(self.gravity[0], self.gravity[1])
+
+    self.emit_signal("countdown_changed", int(self.rotate_countdown))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -100,6 +102,7 @@ func _process(delta):
         # Only rotate if no controlled block and no moves or clears just happened
         if self.controlled_block == null and not rotation_blocked:
             self.rotate_countdown = Globals.ROTATE_INTERVAL
+            self.emit_signal("countdown_changed", int(self.rotate_countdown))
             self.rotate_gravity(grid)
     else:
         # Spawn new block immediately

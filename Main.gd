@@ -19,7 +19,7 @@ func _ready():
     on_cost_changed($Playfield.cost)
 
     _dontcare = $Playfield.connect("countdown_changed", self, "on_countdown_changed")
-    on_countdown_changed(Globals.ROTATE_INTERVAL)
+    on_countdown_changed(int(Globals.ROTATE_INTERVAL))
 
     _dontcare = $Playfield.connect("game_over", self, "on_game_over")
     $Playfield.pause()
