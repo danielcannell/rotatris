@@ -28,8 +28,8 @@ var boundary: Boundary
 # Called when the node enters the scene tree for the first time.
 func _ready():
     self.blocks = {}
-    boundary = Boundary.new()
-    add_child(boundary)
+    self.boundary = Boundary.new()
+    add_child(self.boundary)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -92,7 +92,7 @@ func process_inputs():
                 self.controlled_block.move(grid, step, false)
 
         if rotate:
-            self.controlled_block.try_rotate(grid, rotate, gravity)
+            self.controlled_block.try_rotate(grid, rotate, self.gravity)
 
         if drop:
             var step := self.gravity
@@ -153,7 +153,7 @@ func clear_full_lines(grid: Dictionary):
             for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
                 line.append([col, row])
                 var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
-                if id == Globals.INVALID_BLOCK_ID or blocks[id].moved:
+                if id == Globals.INVALID_BLOCK_ID or self.blocks[id].moved:
                     full = false
                     break
                 if not blocks_in_row.has(id):
@@ -175,7 +175,7 @@ func clear_full_lines(grid: Dictionary):
             for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
                 line.append([col, row])
                 var id = grid.get([col, row], Globals.INVALID_BLOCK_ID)
-                if id == Globals.INVALID_BLOCK_ID or blocks[id].moved:
+                if id == Globals.INVALID_BLOCK_ID or self.blocks[id].moved:
                     full = false
                     break
                 if not blocks_in_row.has(id):
@@ -201,7 +201,7 @@ func rotate_gravity():
 func spawn_random_block():
     var block: Node2D = Block.new()
     block.random()
-    block.coord = [-(Globals.GRID_HALF_WIDTH + 10) * gravity[0], -(Globals.GRID_HALF_WIDTH + 10) * gravity[1]] # TODO: This should be in the block class
+    block.coord = [-(Globals.GRID_HALF_WIDTH + 10) * self.gravity[0], -(Globals.GRID_HALF_WIDTH + 10) * self.gravity[1]] # TODO: This should be in the block class
     block.update_position()
     add_child(block)
     self.blocks[block.id] = block
