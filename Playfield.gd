@@ -4,6 +4,9 @@ extends Node2D
 signal score_changed
 
 
+# Player score
+var score := 0
+
 # All blocks currently in play, by ID
 var blocks: Dictionary
 
@@ -51,6 +54,11 @@ func _process(delta):
         spawn_random_block()
 
     process_inputs()
+
+
+func update_score(val: int):
+    self.score = val
+    self.emit_signal("score_changed", self.score)
 
 
 func process_inputs():
@@ -126,6 +134,7 @@ func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
 
 
 func clear_full_lines(grid: Dictionary):
+    var lines_cleared := 0
     if self.gravity[0] != 0:
         # for each column
         for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
@@ -143,6 +152,7 @@ func clear_full_lines(grid: Dictionary):
 
             # if column is full
             if full:
+                lines_cleared += 1
                 _split_blocks(grid, blocks_in_row, line)
                 for block in self.blocks.values():
                     assert(block.squares.size() > 0)
@@ -164,9 +174,15 @@ func clear_full_lines(grid: Dictionary):
 
             # if row is full
             if full:
+                lines_cleared += 1
                 _split_blocks(grid, blocks_in_row, line)
                 for block in self.blocks.values():
                     assert(block.squares.size() > 0)
+
+    if lines_cleared > 0:
+        # 1 point for 1 line, 2 for 2 lines, 4 for 3 lines, 8 for 4 lines
+        var new_score := self.score + int(pow(2, lines_cleared - 1))
+        self.update_score(new_score)
 
 
 func rotate_gravity():
@@ -181,7 +197,6 @@ func spawn_random_block():
     add_child(block)
     self.blocks[block.id] = block
     self.controlled_block = block
-    self.emit_signal("score_changed", self.blocks.size())
 
 
 # line is a list of all cells to delete
