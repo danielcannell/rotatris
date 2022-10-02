@@ -12,6 +12,8 @@ var state: int = GameState.INTRO
 
 
 func _ready():
+    randomize()
+
     var _dontcare := $Playfield.connect("score_changed", self, "on_score_changed")
     on_score_changed($Playfield.score)
 
