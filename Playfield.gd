@@ -2,10 +2,14 @@ extends Node2D
 
 
 signal score_changed
+signal cost_changed
 
 
 # Player score
 var score := 0
+
+# Number of lost squares
+var cost := 0
 
 # All blocks currently in play, by ID
 var blocks: Dictionary
@@ -212,6 +216,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
 
 func delete_fallen_blocks():
     var to_delete := []
+    var extra_cost := 0
 
     for id in self.blocks:
         if self.blocks[id].fallen_off(self.gravity):
@@ -219,10 +224,16 @@ func delete_fallen_blocks():
 
     for id in to_delete:
         var block: Block = self.blocks[id]
+        extra_cost += len(block.squares)
         var found := self.blocks.erase(id)
         assert(found, "deleted block was not found")
         self.remove_child(block)
         block.queue_free()
+
+    if extra_cost > 0:
+        self.cost += extra_cost
+        self.emit_signal("cost_changed", cost)
+
 
 
 func rotate_gravity(grid: Dictionary):
