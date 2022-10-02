@@ -219,7 +219,8 @@ func delete_fallen_blocks():
 
     for id in to_delete:
         var block: Block = self.blocks[id]
-        self.blocks.erase(id)
+        var found := self.blocks.erase(id)
+        assert(found, "deleted block was not found")
         self.remove_child(block)
         block.queue_free()
 
