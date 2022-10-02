@@ -317,6 +317,15 @@ func delete_fallen_blocks():
         var found := self.blocks.erase(id)
         assert(found, "deleted block was not found")
         self.remove_child(block)
+
+        for square in block.squares:
+            var coord := [block._old_coord[0] + square[0], block._old_coord[1] + square[1]]
+            var s = Square.instance()
+            s.set_coord(coord)
+            s.set_color(block.color)
+            add_child(s)
+            s.dissolve()
+
         block.queue_free()
 
     if extra_cost > 0:

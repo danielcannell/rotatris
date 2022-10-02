@@ -290,6 +290,6 @@ func try_rotate(grid: Dictionary, rotate: int, gravity: Array):
 func fallen_off(gravity: Array):
     for square in self.squares:
         var dist: int = (coord[0] + square[0]) * gravity[0] + (coord[1] + square[1]) * gravity[1]
-        if dist > Globals.GRID_WIDTH:
+        if dist > Globals.GRID_HALF_WIDTH + 2:
             return true
     return false
