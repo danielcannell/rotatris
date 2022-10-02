@@ -87,6 +87,9 @@ func _process(delta):
         if Input.is_action_just_pressed("drop"):
             state = GameState.PLAYING
             $Playfield.start_game()
+    else:
+        if Input.is_action_just_pressed("ui_cancel"):
+            $Playfield.game_running = not $Playfield.game_running
 
 
 func on_game_over():

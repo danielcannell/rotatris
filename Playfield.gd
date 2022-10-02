@@ -70,6 +70,10 @@ func start_game():
     self.controlled_block = null
     self.rotation = atan2(self.gravity[0], self.gravity[1])
 
+    self.rotation_degrees = 10
+    self.update_cost(6)
+    self.update_score(31)
+
     self.emit_signal("countdown_changed", int(self.rotate_countdown))
 
 
@@ -91,7 +95,7 @@ func _process(delta):
     if old_countdown != new_countdown:
         self.emit_signal("countdown_changed", new_countdown)
 
-    update_camera(delta)
+    # update_camera(delta)
 
     var grid := {}
 
@@ -107,7 +111,7 @@ func _process(delta):
         if self.controlled_block == null and not rotation_blocked:
             self.rotate_countdown = Globals.ROTATE_INTERVAL
             self.emit_signal("countdown_changed", int(self.rotate_countdown))
-            self.rotate_gravity(grid)
+            # self.rotate_gravity(grid)
     else:
         # Spawn new block immediately
         if self.controlled_block == null:
