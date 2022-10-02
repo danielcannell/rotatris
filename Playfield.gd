@@ -32,6 +32,7 @@ var boundary: Boundary
 func _ready():
     self.blocks = {}
     self.boundary = Boundary.new()
+    self.boundary.set_gravity(self.gravity)
     add_child(self.boundary)
 
 
@@ -209,6 +210,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
 
 func rotate_gravity():
     self.gravity = [self.gravity[1], -self.gravity[0]]
+    self.boundary.set_gravity(self.gravity)
 
 
 func spawn_random_block():
