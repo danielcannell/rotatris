@@ -34,7 +34,7 @@ const BACKGROUND_GREY := Color(0.2, 0.2, 0.2)
 
 
 var TIME_TO_MOVE_1_SQUARE := 0.25
-const SPEED_UP_RATE = log(2) / 030
+const SPEED_UP_RATE = log(2) / 300
 const INITIAL_TIME_TO_MOVE_1_SQUARE := 0.25
 const ROTATE_INTERVAL := 10.0
 const GRID_HALF_WIDTH := 5
