@@ -22,6 +22,9 @@ var gravity: Array = [0, 1]
 # The block current controlled by user input
 var controlled_block : Block = null
 
+# Some lines were just cleared - can't rotate until next update
+var rotation_blocked := false
+
 var boundary: Boundary
 
 
@@ -36,22 +39,27 @@ func _ready():
 func _process(delta):
     self.time += delta
 
-    if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
-        self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
-        var grid = update_block_positions()
-        clear_full_lines(grid)
-        self.gravity_counter += 1
-
     update_camera(delta)
 
-    if self.controlled_block == null:
-        # We do this here for now so that we don't rotate while the falling
-        # block is outside the grid
-        if self.gravity_counter >= Globals.MOVES_PER_GRAVITY_CHANGE:
+    var grid := {}
+
+    # Move all blocks downwards
+    if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
+        self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
+        var any_moves := update_block_positions(grid)
+        var any_clears := clear_full_lines(grid)
+        rotation_blocked = any_moves or any_clears
+        self.gravity_counter += 1
+
+    if self.gravity_counter >= Globals.MOVES_PER_GRAVITY_CHANGE:
+        # Only rotate if no controlled block and no moves or clears just happened
+        if self.controlled_block == null and not rotation_blocked:
             self.gravity_counter = 0
             self.rotate_gravity()
-
-        spawn_random_block()
+    else:
+        # Spawn new block immediately
+        if self.controlled_block == null:
+            spawn_random_block()
 
     process_inputs()
 
@@ -100,10 +108,11 @@ func process_inputs():
                 self.controlled_block.move(grid, step, false)
 
 
-# Update the grid coordinates of all blocks
-func update_block_positions() -> Dictionary:
-    var grid := {}
+# Update the grid coordinates of all blocks. Returns true if any moved.
+func update_block_positions(grid: Dictionary) -> bool:
+    grid.clear()
     var done := false
+    var any_moved := false
 
     for block in self.blocks.values():
         block.fill_grid(grid)
@@ -118,13 +127,14 @@ func update_block_positions() -> Dictionary:
             if not block.moved and block.can_move(grid, step):
                 block.move(grid, step)
                 block.moved = true
+                any_moved = true
                 done = false
 
         # When the controlled block lands it becomes uncontrolled
         if self.controlled_block != null and not self.controlled_block.moved:
             self.controlled_block = null
 
-    return grid
+    return any_moved
 
 
 func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
@@ -142,7 +152,8 @@ func _split_blocks(grid: Dictionary, to_split: Array, line: Array):
             self.add_child(x)
 
 
-func clear_full_lines(grid: Dictionary):
+# Clear any full lines and update the score. Returns true if any lines cleared.
+func clear_full_lines(grid: Dictionary) -> bool:
     var lines_cleared := 0
     if self.gravity[0] != 0:
         # for each column
@@ -192,6 +203,8 @@ func clear_full_lines(grid: Dictionary):
         # 1 point for 1 line, 2 for 2 lines, 4 for 3 lines, 8 for 4 lines
         var new_score := self.score + int(pow(2, lines_cleared - 1))
         self.update_score(new_score)
+
+    return lines_cleared > 0
 
 
 func rotate_gravity():
