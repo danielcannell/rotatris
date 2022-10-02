@@ -56,7 +56,7 @@ func _process(delta):
         # Only rotate if no controlled block and no moves or clears just happened
         if self.controlled_block == null and not rotation_blocked:
             self.gravity_counter = 0
-            self.rotate_gravity()
+            self.rotate_gravity(grid)
     else:
         # Spawn new block immediately
         if self.controlled_block == null:
@@ -208,9 +208,43 @@ func clear_full_lines(grid: Dictionary) -> bool:
     return lines_cleared > 0
 
 
-func rotate_gravity():
+func rotate_gravity(grid: Dictionary):
     self.gravity = [self.gravity[1], -self.gravity[0]]
     self.boundary.set_gravity(self.gravity)
+
+    # Split any blocks along the new boundary line
+    if self.gravity[0]:
+        # slice at y min/max
+        var row: int = -Globals.GRID_HALF_WIDTH * self.gravity[0]
+        if row < 0:
+            row -= 1
+        print(row)
+        var to_slice := []
+        var line := []
+        for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+            line.append([col, row])
+            var id: int = grid.get([col, row], Globals.INVALID_BLOCK_ID)
+            if id != Globals.INVALID_BLOCK_ID:
+                if not to_slice.has(id):
+                    to_slice.append(id)
+        if to_slice.size() > 0:
+            self._split_blocks(grid, to_slice, line)
+    else:
+        # slice at x min/max
+        var col: int = Globals.GRID_HALF_WIDTH * self.gravity[1]
+        if col < 0:
+            col -= 1
+        print(col)
+        var to_slice := []
+        var line := []
+        for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+            line.append([col, row])
+            var id: int = grid.get([col, row], Globals.INVALID_BLOCK_ID)
+            if id != Globals.INVALID_BLOCK_ID:
+                if not to_slice.has(id):
+                    to_slice.append(id)
+        if to_slice.size() > 0:
+            self._split_blocks(grid, to_slice, line)
 
 
 func spawn_random_block():
