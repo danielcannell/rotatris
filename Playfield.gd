@@ -207,7 +207,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
     var lines_cleared := 0
     if self.gravity[0] != 0:
         # for each column
-        for col in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+        for col in range(-Globals.GRID_WIDTH, Globals.GRID_WIDTH):
             var full := true
             var blocks_in_row := []
             var line := []
@@ -229,7 +229,7 @@ func clear_full_lines(grid: Dictionary) -> bool:
 
     else:
         # for each row
-        for row in range(-Globals.GRID_HALF_WIDTH, Globals.GRID_HALF_WIDTH):
+        for row in range(-Globals.GRID_WIDTH, Globals.GRID_WIDTH):
             var full := true
             var blocks_in_row := []
             var line := []
