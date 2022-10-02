@@ -19,6 +19,7 @@ var coord := [0, 0]
 # Unique block ID
 var id := Globals.INVALID_BLOCK_ID
 
+
 # Has this block been moved this turn?
 var moved := false
 
@@ -94,6 +95,44 @@ const SHAPE_ROT_LOOKUP = {
         3: SHAPES_ROTATIONS["t_right"],
     },
 }
+
+
+# bits
+# left, top, right, bottom,
+# 0, 0, 0, 0,
+# 0, 0, 0, 1
+# 0, 0, 1, 0
+# 0, 0, 1, 1
+# 0, 1, 0, 0
+# 0, 1, 0, 1
+# 0, 1, 1, 0
+# 0, 1, 1, 1 -
+# 1, 0, 0, 0
+# 1, 0, 0, 1
+# 1, 0, 1, 0
+# 1, 0, 1, 1 -
+# 1, 1, 0, 0
+# 1, 1, 0, 1
+# 1, 1, 1, 0
+# 1, 1, 1, 1
+
+const LEFT_BIT = 8;
+const TOP_BIT = 4;
+const RIGHT_BIT = 2;
+const BOTTOM_BIT = 1;
+
+
+func find_box_sprite_idx(pos: Array) -> int:
+    var key: int = 0
+    if not ([pos[0]-1, pos[1]] in squares):
+        key += LEFT_BIT
+    if not ([pos[0]+1, pos[1]] in squares):
+        key += RIGHT_BIT
+    if not ([pos[0], pos[1]-1] in squares):
+        key += TOP_BIT
+    if not ([pos[0], pos[1]+1] in squares):
+        key += BOTTOM_BIT
+    return key
 
 
 # shape is Globals.DefaultShapes
