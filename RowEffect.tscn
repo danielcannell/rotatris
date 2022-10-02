@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://RowEffect.gd" type="Script" id=1]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.100985, 0.194581, 0.480296, 0.788177, 1 )
+colors = PoolColorArray( 0.585205, 0, 0.796875, 1, 0.968872, 0.00390625, 1, 1, 0.481543, 0.0627136, 0.535156, 0.989779, 0.546875, 0, 1, 0.924058, 0, 0.882353, 1, 0.866667, 0.976471, 0.996078, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.755245, 0.664773 ), -2.86, -2.86, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 2
+emission_box_extents = Vector3( 1, 160, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 44.25
+initial_velocity_random = 0.15
+angular_velocity = 720.0
+angular_velocity_random = 0.27
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = -61.95
+linear_accel_random = 0.64
+angle = 76.5
+angle_random = 0.79
+scale = 3.0
+scale_random = 0.45
+scale_curve = SubResource( 4 )
+color_ramp = SubResource( 2 )
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="up" type="Particles2D" parent="."]
+rotation = -1.5708
+amount = 100
+lifetime = 0.8
+speed_scale = 2.0
+explosiveness = 0.99
+process_material = SubResource( 5 )
+
+[node name="down" type="Particles2D" parent="."]
+rotation = 1.5708
+amount = 100
+lifetime = 0.8
+speed_scale = 2.0
+explosiveness = 1.0
+randomness = 0.08
+process_material = SubResource( 5 )
