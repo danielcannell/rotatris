@@ -169,6 +169,7 @@ func update_shape():
         var child: Node2D = Square.instance()
         child.position = Vector2(x, y) * BLOCK_SIZE
         child.set_color(color)
+        child.set_frame(find_box_sprite_idx(pos))
         add_child(child)
 
 

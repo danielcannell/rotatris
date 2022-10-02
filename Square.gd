@@ -7,3 +7,6 @@ func _init():
 
 func set_color(color: int):
     self.modulate = Globals.ColorLookup[color]
+
+func set_frame(frame: int):
+    $Sprite.frame = frame
