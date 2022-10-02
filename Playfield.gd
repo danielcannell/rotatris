@@ -56,6 +56,7 @@ func start_game():
     self.game_running = true
     self.intro_timer = 0.1
     self.update_score(0)
+    self.update_cost(0)
     for id in self.blocks:
         var block = self.blocks[id]
         self.remove_child(block)
@@ -116,6 +117,11 @@ func _process(delta):
 func update_score(val: int):
     self.score = val
     self.emit_signal("score_changed", self.score)
+
+
+func update_cost(val: int):
+    self.cost = val
+    self.emit_signal("cost_changed", self.cost)
 
 
 func process_inputs():
@@ -276,8 +282,8 @@ func delete_fallen_blocks():
         block.queue_free()
 
     if extra_cost > 0:
-        self.cost += extra_cost
-        self.emit_signal("cost_changed", cost)
+        var new_cost := self.cost + extra_cost
+        self.update_cost(new_cost)
 
 
 
