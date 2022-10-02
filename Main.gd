@@ -60,6 +60,11 @@ func on_countdown_changed(value: int):
     else:
         $UI/CountdownLabel.text = "OVERTIME"
 
+    if value <= 3:
+        $UI/CountdownLabel.add_color_override("font_color", Color(1, 0, 0))
+    else:
+        $UI/CountdownLabel.add_color_override("font_color", Color(1, 1, 1))
+
 
 var shader_time = 0
 var shader_step_multi_base = 0.001
