@@ -155,6 +155,8 @@ func process_inputs():
             var step := self.gravity
             while self.controlled_block.can_move(grid, step, self.boundary):
                 self.controlled_block.move(grid, step, false)
+            # after a drop, immediately lose control of the block
+            self.controlled_block = null
 
 
 # Update the grid coordinates of all blocks. Returns true if any moved.
