@@ -18,6 +18,9 @@ func _ready():
     _dontcare = $Playfield.connect("cost_changed", self, "on_cost_changed")
     on_cost_changed($Playfield.cost)
 
+    _dontcare = $Playfield.connect("countdown_changed", self, "on_countdown_changed")
+    on_countdown_changed(Globals.ROTATE_INTERVAL)
+
     _dontcare = $Playfield.connect("game_over", self, "on_game_over")
     $Playfield.pause()
     update_ui()
@@ -49,6 +52,13 @@ func on_cost_changed(value: int):
     $UI/DroppedBlocksLabel.text = "Dropped Blocks: " + str(value) + " / " + str(Globals.MAX_DROPPED_BLOCKS)
     if value >= Globals.MAX_DROPPED_BLOCKS:
         on_game_over()
+
+
+func on_countdown_changed(value: int):
+    if value >= 0:
+        $UI/CountdownLabel.text = str(value)
+    else:
+        $UI/CountdownLabel.text = "OVERTIME"
 
 
 var shader_time = 0

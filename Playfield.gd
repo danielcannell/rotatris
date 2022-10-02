@@ -4,6 +4,7 @@ extends Node2D
 signal score_changed
 signal cost_changed
 signal game_over
+signal countdown_changed
 
 
 # Is the game in progress?
@@ -25,7 +26,7 @@ var blocks: Dictionary
 var time := 0.0
 
 # Number of moves since the last gravity change
-var gravity_counter := 0
+var rotate_countdown := Globals.ROTATE_INTERVAL
 
 # Current gravity vector
 var gravity: Array = [0, 1]
@@ -77,6 +78,13 @@ func _process(delta):
 
     self.time += delta
 
+    var old_countdown := int(ceil(self.rotate_countdown))
+    self.rotate_countdown -= delta
+    var new_countdown := int(ceil(self.rotate_countdown))
+
+    if old_countdown != new_countdown:
+        self.emit_signal("countdown_changed", new_countdown)
+
     update_camera(delta)
 
     var grid := {}
@@ -87,12 +95,11 @@ func _process(delta):
         var any_moves := update_block_positions(grid)
         var any_clears := clear_full_lines(grid)
         rotation_blocked = any_moves or any_clears
-        self.gravity_counter += 1
 
-    if self.gravity_counter >= Globals.MOVES_PER_GRAVITY_CHANGE:
+    if self.rotate_countdown <= 0:
         # Only rotate if no controlled block and no moves or clears just happened
         if self.controlled_block == null and not rotation_blocked:
-            self.gravity_counter = 0
+            self.rotate_countdown = Globals.ROTATE_INTERVAL
             self.rotate_gravity(grid)
     else:
         # Spawn new block immediately
