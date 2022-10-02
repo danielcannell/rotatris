@@ -5,10 +5,19 @@ extends Node2D
 var Square = preload("res://Square.tscn")
 
 
-func make_wall(start: Vector2, step: Vector2, num: int):
+var squares := {}
+
+
+func collide(coord: Array):
+    return self.squares.has(coord)
+
+
+func make_wall(start: Array, step: Array, num: int):
     for i in range(num):
-        var coord := start + step * i
-        var pos := coord * Globals.BLOCK_SIZE
+        var coord := [start[0] + step[0] * i, start[1] + step[1] * i]
+        self.squares[coord] = true
+
+        var pos := Vector2(coord[0], coord[1]) * Globals.BLOCK_SIZE
 
         var child: Node2D = Square.instance()
         child.position = pos
@@ -16,6 +25,7 @@ func make_wall(start: Vector2, step: Vector2, num: int):
 
 
 func set_gravity(gravity: Array):
+    self.squares = {}
     for n in get_children():
         remove_child(n)
         n.queue_free()
@@ -24,22 +34,22 @@ func set_gravity(gravity: Array):
     var width := Globals.GRID_WIDTH
 
     if gravity == [0, 1]:
-        make_wall(Vector2(-half - 1, half),              Vector2(1, 0),      width + 1)
-        make_wall(Vector2(half, half),                   Vector2(0, -1), 2 * width + 1)
-        make_wall(Vector2(half, -width - half - 1),      Vector2(-1, 0),     width + 1)
-        make_wall(Vector2(-half - 1, -width - half - 1), Vector2(0, 1),  2 * width + 1)
+        make_wall([-half - 1, half],              [1, 0],      width + 1)
+        make_wall([half, half],                   [0, -1], 2 * width + 1)
+        make_wall([half, -width - half - 1],      [-1, 0],     width + 1)
+        make_wall([-half - 1, -width - half - 1], [0, 1],  2 * width + 1)
     elif gravity == [0, -1]:
-        make_wall(Vector2(-half - 1, width + half),      Vector2(1, 0),      width + 1)
-        make_wall(Vector2(half, width + half),           Vector2(0, -1), 2 * width + 1)
-        make_wall(Vector2(half, -half - 1),              Vector2(-1, 0),     width + 1)
-        make_wall(Vector2(-half - 1, -half - 1),         Vector2(0, 1),  2 * width + 1)
+        make_wall([-half - 1, width + half],      [1, 0],      width + 1)
+        make_wall([half, width + half],           [0, -1], 2 * width + 1)
+        make_wall([half, -half - 1],              [-1, 0],     width + 1)
+        make_wall([-half - 1, -half - 1],         [0, 1],  2 * width + 1)
     elif gravity == [1, 0]:
-        make_wall(Vector2(-width - half - 1, half),      Vector2(1, 0),  2 * width + 1)
-        make_wall(Vector2(half, half),                   Vector2(0, -1),     width + 1)
-        make_wall(Vector2(half, -half - 1),              Vector2(-1, 0), 2 * width + 1)
-        make_wall(Vector2(-width - half - 1, -half - 1), Vector2(0, 1),      width + 1)
+        make_wall([-width - half - 1, half],      [1, 0],  2 * width + 1)
+        make_wall([half, half],                   [0, -1],     width + 1)
+        make_wall([half, -half - 1],              [-1, 0], 2 * width + 1)
+        make_wall([-width - half - 1, -half - 1], [0, 1],      width + 1)
     elif gravity == [-1, 0]:
-        make_wall(Vector2(-half - 1, half),              Vector2(1, 0),  2 * width + 1)
-        make_wall(Vector2(width + half, half),           Vector2(0, -1),     width + 1)
-        make_wall(Vector2(width + half, -half - 1),      Vector2(-1, 0), 2 * width + 1)
-        make_wall(Vector2(-half - 1, -half - 1),         Vector2(0, 1),      width + 1)
+        make_wall([-half - 1, half],              [1, 0],  2 * width + 1)
+        make_wall([width + half, half],           [0, -1],     width + 1)
+        make_wall([width + half, -half - 1],      [-1, 0], 2 * width + 1)
+        make_wall([-half - 1, -half - 1],         [0, 1],      width + 1)

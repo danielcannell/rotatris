@@ -97,7 +97,7 @@ func process_inputs():
         if move:
             var step := [move * +self.gravity[1], move * -self.gravity[0]]
 
-            if self.controlled_block.can_move(grid, step):
+            if self.controlled_block.can_move(grid, step, self.boundary):
                 self.controlled_block.move(grid, step, false)
 
         if rotate:
@@ -105,7 +105,7 @@ func process_inputs():
 
         if drop:
             var step := self.gravity
-            while self.controlled_block.can_move(grid, step):
+            while self.controlled_block.can_move(grid, step, self.boundary):
                 self.controlled_block.move(grid, step, false)
 
 
@@ -125,7 +125,7 @@ func update_block_positions(grid: Dictionary) -> bool:
         for block in self.blocks.values():
             var step := self.gravity
 
-            if not block.moved and block.can_move(grid, step):
+            if not block.moved and block.can_move(grid, step, self.boundary):
                 block.move(grid, step)
                 block.moved = true
                 any_moved = true
@@ -246,9 +246,10 @@ func rotate_gravity(grid: Dictionary):
 
 
 func spawn_random_block():
+    var height := Globals.GRID_WIDTH + Globals.GRID_HALF_WIDTH - 2
     var block: Node2D = Block.new()
     block.random()
-    block.coord = [-(Globals.GRID_HALF_WIDTH + 10) * self.gravity[0], -(Globals.GRID_HALF_WIDTH + 10) * self.gravity[1]] # TODO: This should be in the block class
+    block.coord = [-height * self.gravity[0], -height * self.gravity[1]] # TODO: This should be in the block class
     block.update_position()
     add_child(block)
     self.blocks[block.id] = block

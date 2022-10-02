@@ -202,7 +202,7 @@ func erase_grid(grid: Dictionary):
         var _dontcare := grid.erase(c)
 
 
-func can_move(grid: Dictionary, step: Array):
+func can_move(grid: Dictionary, step: Array, boundary: Boundary):
     var new_coord := [self.coord[0] + step[0], self.coord[1] + step[1]]
 
     for square in self.squares:
@@ -213,13 +213,7 @@ func can_move(grid: Dictionary, step: Array):
             return false
 
         # Check if this square is leaving the grid bounds
-        if step[0] > 0 and c[0] >= Globals.GRID_HALF_WIDTH:
-            return false
-        if step[0] < 0 and c[0] < -Globals.GRID_HALF_WIDTH:
-            return false
-        if step[1] > 0 and c[1] >= Globals.GRID_HALF_WIDTH:
-            return false
-        if step[1] < 0 and c[1] < -Globals.GRID_HALF_WIDTH:
+        if boundary.collide(c):
             return false
 
     return true
