@@ -3,6 +3,7 @@ extends Node2D
 
 signal score_changed
 signal cost_changed
+signal game_over
 
 
 # Player score
@@ -279,9 +280,17 @@ func spawn_random_block():
     block.random()
     block.coord = [-height * self.gravity[0], -height * self.gravity[1]] # TODO: This should be in the block class
     block.update_position()
-    add_child(block)
-    self.blocks[block.id] = block
-    self.controlled_block = block
+
+    var grid := {}
+    for b in self.blocks.values():
+        b.fill_grid(grid)
+
+    if block.collide(grid):
+        self.emit_signal("game_over")
+    else:
+        add_child(block)
+        self.blocks[block.id] = block
+        self.controlled_block = block
 
 
 # line is a list of all cells to delete

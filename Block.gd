@@ -212,6 +212,16 @@ func erase_grid(grid: Dictionary):
         var _dontcare := grid.erase(c)
 
 
+func collide(grid: Dictionary):
+    for square in self.squares:
+        var c := [self.coord[0] + square[0], self.coord[1] + square[1]]
+
+        if grid.has(c) and grid[c] != self.id:
+            return true
+
+    return false
+
+
 func can_move(grid: Dictionary, step: Array, boundary: Boundary):
     var new_coord := [self.coord[0] + step[0], self.coord[1] + step[1]]
 

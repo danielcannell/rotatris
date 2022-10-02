@@ -8,6 +8,8 @@ func _ready():
     _dontcare = $Playfield.connect("cost_changed", self, "on_cost_changed")
     on_cost_changed($Playfield.cost)
 
+    _dontcare = $Playfield.connect("game_over", self, "on_game_over")
+
 
 func on_score_changed(value: int):
     $UI/ScoreLabel.text = "Score: " + str(value)
@@ -18,7 +20,7 @@ func on_score_changed(value: int):
 func on_cost_changed(value: int):
     $UI/DroppedBlocksLabel.text = "Dropped Blocks: " + str(value) + " / " + str(Globals.MAX_DROPPED_BLOCKS)
     if value >= Globals.MAX_DROPPED_BLOCKS:
-        game_over()
+        on_game_over()
 
 
 var shader_time = 0
@@ -31,6 +33,5 @@ func _process(delta):
     $Background.material.set_shader_param("stime", shader_time)
 
 
-func game_over():
-    # TODO
-    pass
+func on_game_over():
+    print("GAME OVER")
