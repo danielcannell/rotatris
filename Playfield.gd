@@ -56,6 +56,7 @@ func pause():
 
 
 func start_game():
+    Globals.TIME_TO_MOVE_1_SQUARE = Globals.INITIAL_TIME_TO_MOVE_1_SQUARE
     self.game_running = true
     self.intro_timer = 0.1
     self.update_score(0)
@@ -97,6 +98,7 @@ func _process(delta):
 
     # Move all blocks downwards
     if self.time > Globals.TIME_TO_MOVE_1_SQUARE:
+        Globals.TIME_TO_MOVE_1_SQUARE *= Globals.SPEED_UP_RATE
         self.time = fmod(self.time, Globals.TIME_TO_MOVE_1_SQUARE)
         var any_moves := update_block_positions(grid)
         var any_clears := clear_full_lines(grid)

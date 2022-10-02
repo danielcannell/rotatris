@@ -33,7 +33,9 @@ var ColorLookup = {
 const BACKGROUND_GREY := Color(0.2, 0.2, 0.2)
 
 
-const TIME_TO_MOVE_1_SQUARE := 0.25
+var TIME_TO_MOVE_1_SQUARE := 0.25
+const SPEED_UP_RATE = 0.999
+const INITIAL_TIME_TO_MOVE_1_SQUARE := 0.25
 const ROTATE_INTERVAL := 10.0
 const GRID_HALF_WIDTH := 5
 const GRID_WIDTH := GRID_HALF_WIDTH * 2
