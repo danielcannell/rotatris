@@ -76,11 +76,11 @@ text = "Dropped Blocks: 0"
 
 [node name="CountdownLabel" type="Label" parent="UI"]
 margin_left = 200.0
-margin_top = 823.0
+margin_top = 810.0
 margin_right = 400.0
-margin_bottom = 862.0
+margin_bottom = 887.0
 grow_horizontal = 2
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 text = "10"
 align = 1
 
